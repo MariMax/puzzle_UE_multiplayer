@@ -17,6 +17,11 @@ class UPuzzleGameInstance : public UGameInstance
 public:
 	UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer);
 	virtual void Init() override;
+
+	UFUNCTION(Exec)
+	void Host();
 	
+	UFUNCTION(Exec)
+	void Join(const FString& Address);
 	
 };
