@@ -2,10 +2,19 @@
 
 #include "PuzzleGameInstance.h"
 #include "Engine/Engine.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 UPuzzleGameInstance::UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer)
 {
-	UE_LOG(LogTemp, Warning, TEXT("constructor"))
+	static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuClassFinder(TEXT("/Game/Menu/BPW_MainMenu"));
+	if (MainMenuClassFinder.Class)
+	{
+		MainMenu = MainMenuClassFinder.Class;
+		UE_LOG(LogTemp, Warning, TEXT("MainMenuClass %s"), *MainMenuClassFinder.Class->GetName())
+	}
+	
 }
 
 void UPuzzleGameInstance::Init()
@@ -35,4 +44,18 @@ void UPuzzleGameInstance::Join(const FString & Address)
 	if (!PlayerController) return;
 
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+}
+
+void UPuzzleGameInstance::LoadMenu()
+{
+
+	if (!MainMenu) return;
+	UUserWidget* MainMenuInstance = CreateWidget<UUserWidget>(this, MainMenu);
+	if (!MainMenuInstance) return;
+
+	MainMenuInstance->AddToViewport();
+
+	//UWorld* World = GetWorld();
+	//if (!World) return;
+	//UGameplayStatics::OpenLevel(World, TEXT("/Game/Menu/MainMenu"), ETravelType::TRAVEL_Absolute);
 }

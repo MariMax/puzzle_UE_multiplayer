@@ -36,6 +36,12 @@ APressurePlatform::APressurePlatform()
 
 	MC = CreateDefaultSubobject<UMovingComponent>(FName("MC"));
 	MC->EnableComponent(false);
+
+	if (HasAuthority())
+	{
+		SetReplicates(true);
+		SetReplicateMovement(true);
+	}
 }
 
 // Called when the game starts or when spawned
