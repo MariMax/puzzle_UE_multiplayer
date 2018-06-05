@@ -55,6 +55,16 @@ void UPuzzleGameInstance::LoadMenu()
 
 	MainMenuInstance->AddToViewport();
 
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!PlayerController) return;
+
+	FInputModeUIOnly UIInputMode;
+	UIInputMode.SetWidgetToFocus(MainMenuInstance->TakeWidget());
+	UIInputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	PlayerController->SetInputMode(UIInputMode);
+	PlayerController->bShowMouseCursor = true;
+
 	//UWorld* World = GetWorld();
 	//if (!World) return;
 	//UGameplayStatics::OpenLevel(World, TEXT("/Game/Menu/MainMenu"), ETravelType::TRAVEL_Absolute);
