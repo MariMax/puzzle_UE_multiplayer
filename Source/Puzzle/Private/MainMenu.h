@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "MenuInterface.h"
 #include "MainMenu.generated.h"
 
 class UButton;
@@ -28,5 +29,10 @@ class UMainMenu : public UUserWidget
 
 	UFUNCTION()
 	void OnJoinClick();
+
+	IMenuInterface* MenuInterface = nullptr;
+
+public:
+	void SetMenuInterface(IMenuInterface*);
 
 };

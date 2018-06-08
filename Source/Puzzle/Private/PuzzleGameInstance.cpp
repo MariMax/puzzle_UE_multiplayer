@@ -5,6 +5,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "MainMenu.h"
 
 UPuzzleGameInstance::UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer)
 {
@@ -50,10 +51,11 @@ void UPuzzleGameInstance::LoadMenu()
 {
 
 	if (!MainMenu) return;
-	UUserWidget* MainMenuInstance = CreateWidget<UUserWidget>(this, MainMenu);
+	UMainMenu* MainMenuInstance = CreateWidget<UMainMenu>(this, MainMenu);
 	if (!MainMenuInstance) return;
 
 	MainMenuInstance->AddToViewport();
+	MainMenuInstance->SetMenuInterface(this);
 
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!PlayerController) return;

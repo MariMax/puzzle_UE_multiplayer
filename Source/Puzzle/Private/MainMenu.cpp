@@ -17,10 +17,16 @@ bool UMainMenu::Initialize()
 
 void UMainMenu::OnHostClick()
 {
-	UE_LOG(LogTemp, Warning, TEXT("HOST"))
+	if (!MenuInterface) return;
+	MenuInterface->Host();
 }
 
 void UMainMenu::OnJoinClick()
 {
 	UE_LOG(LogTemp, Warning, TEXT("JOIN"))
+}
+
+void UMainMenu::SetMenuInterface(IMenuInterface* implementation)
+{
+	MenuInterface = implementation;
 }
