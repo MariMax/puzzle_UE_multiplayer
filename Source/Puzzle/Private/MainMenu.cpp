@@ -2,6 +2,8 @@
 
 #include "MainMenu.h"
 #include "Components/Button.h"
+#include "Components/EditableTextBox.h"
+#include "Components/WidgetSwitcher.h"
 
 bool UMainMenu::Initialize()
 {
@@ -15,6 +17,19 @@ bool UMainMenu::Initialize()
 	return true;
 }
 
+void UMainMenu::OnLevelRemovedFromWorld(ULevel * InLevel, UWorld * InWorld)
+{
+	Super::OnLevelRemovedFromWorld(InLevel, InWorld);
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) return;
+
+	FInputModeGameOnly GameInputMode;
+
+	PlayerController->SetInputMode(GameInputMode);
+	PlayerController->bShowMouseCursor = false;
+
+}
+
 void UMainMenu::OnHostClick()
 {
 	if (!MenuInterface) return;
@@ -23,10 +38,35 @@ void UMainMenu::OnHostClick()
 
 void UMainMenu::OnJoinClick()
 {
-	UE_LOG(LogTemp, Warning, TEXT("JOIN"))
+	if (!MenuSwitcher) return;
+	ActiveMenu++;
+	MenuSwitcher->SetActiveWidgetIndex(ActiveMenu);
 }
 
-void UMainMenu::SetMenuInterface(IMenuInterface* implementation)
+void UMainMenu::OnBackClick()
 {
+	if (!MenuSwitcher) return;
+	ActiveMenu--;
+	MenuSwitcher->SetActiveWidgetIndex(ActiveMenu);
+}
+
+void UMainMenu::OnJoinTheGameClick()
+{
+}
+
+void UMainMenu::Setup(IMenuInterface* implementation)
+{
+	AddToViewport();
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) return;
+
+	FInputModeUIOnly UIInputMode;
+	UIInputMode.SetWidgetToFocus(TakeWidget());
+	UIInputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	PlayerController->SetInputMode(UIInputMode);
+	PlayerController->bShowMouseCursor = true;
+
 	MenuInterface = implementation;
 }

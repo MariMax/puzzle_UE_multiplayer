@@ -27,10 +27,10 @@ void UPuzzleGameInstance::Host()
 {
 	UEngine* Engine = GetEngine();
 	if (!Engine) return;
-	Engine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Host"));
-
+	
 	UWorld* World = GetWorld();
 	if (!World) return;
+	Engine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Host"));
 	World->ServerTravel("/Game/Puzzle/Maps/Game?listen");
 }
 
@@ -54,18 +54,7 @@ void UPuzzleGameInstance::LoadMenu()
 	UMainMenu* MainMenuInstance = CreateWidget<UMainMenu>(this, MainMenu);
 	if (!MainMenuInstance) return;
 
-	MainMenuInstance->AddToViewport();
-	MainMenuInstance->SetMenuInterface(this);
-
-	APlayerController* PlayerController = GetFirstLocalPlayerController();
-	if (!PlayerController) return;
-
-	FInputModeUIOnly UIInputMode;
-	UIInputMode.SetWidgetToFocus(MainMenuInstance->TakeWidget());
-	UIInputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-
-	PlayerController->SetInputMode(UIInputMode);
-	PlayerController->bShowMouseCursor = true;
+	MainMenuInstance->Setup(this);
 
 	//UWorld* World = GetWorld();
 	//if (!World) return;

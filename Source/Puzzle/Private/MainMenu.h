@@ -22,7 +22,20 @@ class UMainMenu : public UUserWidget
 	UPROPERTY(meta = (BindWidget))
 	UButton* Join;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* JoinTheGame;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Back;
+
+	UPROPERTY(meta = (BindWidget))
+	class UEditableTextBox* IpAddress;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* MenuSwitcher;
+
 	virtual bool Initialize() override;
+	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
 	UFUNCTION()
 	void OnHostClick();
@@ -30,9 +43,17 @@ class UMainMenu : public UUserWidget
 	UFUNCTION()
 	void OnJoinClick();
 
+	UFUNCTION()
+	void OnBackClick();
+
+	UFUNCTION()
+	void OnJoinTheGameClick();
+
+	int32 ActiveMenu = 0;
+
 	IMenuInterface* MenuInterface = nullptr;
 
 public:
-	void SetMenuInterface(IMenuInterface*);
+	void Setup(IMenuInterface*);
 
 };
