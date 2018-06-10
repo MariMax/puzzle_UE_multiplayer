@@ -8,11 +8,12 @@
 bool UMainMenu::Initialize()
 {
 	bool bParentInitResult = Super::Initialize();
-	if (!bParentInitResult || !Host || !Join) return false;
+	if (!bParentInitResult || !Host || !Join || !Back || !JoinTheGame) return false;
 	
 	Host->OnClicked.AddDynamic(this, &UMainMenu::OnHostClick);
 	Join->OnClicked.AddDynamic(this, &UMainMenu::OnJoinClick);
-
+	Back->OnClicked.AddDynamic(this, &UMainMenu::OnBackClick);
+	JoinTheGame->OnClicked.AddDynamic(this, &UMainMenu::OnJoinTheGameClick);
 
 	return true;
 }
@@ -39,19 +40,22 @@ void UMainMenu::OnHostClick()
 void UMainMenu::OnJoinClick()
 {
 	if (!MenuSwitcher) return;
-	ActiveMenu++;
-	MenuSwitcher->SetActiveWidgetIndex(ActiveMenu);
+	auto numberOfWidgets = MenuSwitcher->GetNumWidgets();
+	MenuSwitcher->SetActiveWidgetIndex(numberOfWidgets-1);
 }
 
 void UMainMenu::OnBackClick()
 {
 	if (!MenuSwitcher) return;
-	ActiveMenu--;
-	MenuSwitcher->SetActiveWidgetIndex(ActiveMenu);
+	MenuSwitcher->SetActiveWidgetIndex(0);
 }
 
 void UMainMenu::OnJoinTheGameClick()
 {
+	if (!IpAddress || !MenuInterface) return;
+	auto ip = IpAddress->GetText();
+	if (ip.IsEmpty()) return;
+	MenuInterface->Join(ip.ToString());
 }
 
 void UMainMenu::Setup(IMenuInterface* implementation)

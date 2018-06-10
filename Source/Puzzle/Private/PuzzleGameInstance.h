@@ -5,17 +5,23 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "MenuInterface.h"
+#include "GameMenuInterface.h"
 #include "PuzzleGameInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class UPuzzleGameInstance : public UGameInstance, public IMenuInterface
+class UPuzzleGameInstance : public UGameInstance, public IMenuInterface, public IGameMenuInterface
 {
 	GENERATED_BODY()
 
 	TSubclassOf<class UUserWidget> MainMenu;
+	TSubclassOf<class UUserWidget> GameMenu;
+
+	class UGameMenu* GameMenuInstance;
+
+	virtual void QuitGame() override;
 	
 public:
 	UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer);
@@ -29,5 +35,8 @@ public:
 
 	UFUNCTION(Exec, BlueprintCallable)
 	void LoadMenu();
+
+	UFUNCTION(BlueprintCallable)
+	void OpenGameMenu();
 	
 };

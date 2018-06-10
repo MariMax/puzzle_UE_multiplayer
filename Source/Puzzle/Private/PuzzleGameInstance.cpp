@@ -6,14 +6,25 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "MainMenu.h"
+#include "GameMenu.h"
+#include "GenericPlatform/GenericPlatformMisc.h"
+
+void UPuzzleGameInstance::QuitGame()
+{
+	FGenericPlatformMisc::RequestExit(true);
+}
 
 UPuzzleGameInstance::UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer)
 {
 	static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuClassFinder(TEXT("/Game/Menu/BPW_MainMenu"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameMenuClassFinder(TEXT("/Game/Menu/BPW_GameMenu"));
 	if (MainMenuClassFinder.Class)
 	{
 		MainMenu = MainMenuClassFinder.Class;
-		UE_LOG(LogTemp, Warning, TEXT("MainMenuClass %s"), *MainMenuClassFinder.Class->GetName())
+	}
+	if (GameMenuClassFinder.Class)
+	{
+		GameMenu = GameMenuClassFinder.Class;
 	}
 	
 }
@@ -50,13 +61,29 @@ void UPuzzleGameInstance::Join(const FString & Address)
 void UPuzzleGameInstance::LoadMenu()
 {
 
-	if (!MainMenu) return;
-	UMainMenu* MainMenuInstance = CreateWidget<UMainMenu>(this, MainMenu);
-	if (!MainMenuInstance) return;
+	if (MainMenu)
+	{
+		UMainMenu* MainMenuInstance = CreateWidget<UMainMenu>(this, MainMenu);
+		if (!MainMenuInstance) return;
 
-	MainMenuInstance->Setup(this);
+		MainMenuInstance->Setup(this);
+	}
 
 	//UWorld* World = GetWorld();
 	//if (!World) return;
 	//UGameplayStatics::OpenLevel(World, TEXT("/Game/Menu/MainMenu"), ETravelType::TRAVEL_Absolute);
+}
+
+void UPuzzleGameInstance::OpenGameMenu()
+{
+	if (GameMenu && !GameMenuInstance)
+	{
+		GameMenuInstance = CreateWidget<UGameMenu>(this, GameMenu);
+	}
+
+	if (GameMenuInstance)
+	{
+		GameMenuInstance->SetupMenu(this);
+		GameMenuInstance->OpenMenu();
+	}
 }
