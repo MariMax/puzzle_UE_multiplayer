@@ -21,7 +21,7 @@ class UPuzzleGameInstance : public UGameInstance, public IMenuInterface, public 
 
 	class UGameMenu* GameMenuInstance;
 
-	virtual void QuitGame() override;
+	
 	
 public:
 	UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer);
@@ -38,5 +38,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OpenGameMenu();
+
+	virtual void LoadMainMenu() override;
 	
 };

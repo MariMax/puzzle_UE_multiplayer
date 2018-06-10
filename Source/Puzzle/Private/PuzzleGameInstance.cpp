@@ -9,9 +9,10 @@
 #include "GameMenu.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
 
-void UPuzzleGameInstance::QuitGame()
+void UPuzzleGameInstance::LoadMainMenu()
 {
-	FGenericPlatformMisc::RequestExit(true);
+	//FGenericPlatformMisc::RequestExit(true);
+	this->Join(TEXT("/Game/Menu/MainMenu"));
 }
 
 UPuzzleGameInstance::UPuzzleGameInstance(const FObjectInitializer &ObjectInitializer)

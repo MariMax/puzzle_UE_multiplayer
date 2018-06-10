@@ -31,7 +31,7 @@ void UGameMenu::OnQuitClick()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Quit"))
 	if (!GameMenu) return;
-	GameMenu->QuitGame();
+	GameMenu->LoadMainMenu();
 }
 
 void UGameMenu::OpenMenu()
