@@ -8,12 +8,13 @@
 bool UMainMenu::Initialize()
 {
 	bool bParentInitResult = Super::Initialize();
-	if (!bParentInitResult || !Host || !Join || !Back || !JoinTheGame) return false;
+	if (!bParentInitResult || !Host || !Join || !Back || !JoinTheGame || !ExitButton) return false;
 	
 	Host->OnClicked.AddDynamic(this, &UMainMenu::OnHostClick);
 	Join->OnClicked.AddDynamic(this, &UMainMenu::OnJoinClick);
 	Back->OnClicked.AddDynamic(this, &UMainMenu::OnBackClick);
 	JoinTheGame->OnClicked.AddDynamic(this, &UMainMenu::OnJoinTheGameClick);
+	ExitButton->OnClicked.AddDynamic(this, &UMainMenu::OnExitClick);
 
 	return true;
 }
@@ -29,6 +30,12 @@ void UMainMenu::OnLevelRemovedFromWorld(ULevel * InLevel, UWorld * InWorld)
 	PlayerController->SetInputMode(GameInputMode);
 	PlayerController->bShowMouseCursor = false;
 
+}
+
+void UMainMenu::OnExitClick()
+{
+	if (!MenuInterface) return;
+	MenuInterface->ExitTheGame();
 }
 
 void UMainMenu::OnHostClick()

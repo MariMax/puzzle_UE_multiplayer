@@ -28,10 +28,13 @@ public:
 	virtual void Init() override;
 
 	UFUNCTION(Exec)
-	void Host();
+	virtual void ExitTheGame() override;
+
+	UFUNCTION(Exec)
+	void Host() override;
 	
 	UFUNCTION(Exec)
-	void Join(const FString& Address);
+	void Join(const FString& Address) override;
 
 	UFUNCTION(Exec, BlueprintCallable)
 	void LoadMenu();

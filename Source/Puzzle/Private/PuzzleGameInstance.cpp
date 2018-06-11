@@ -35,6 +35,14 @@ void UPuzzleGameInstance::Init()
 	UE_LOG(LogTemp, Warning, TEXT("init"))
 }
 
+void UPuzzleGameInstance::ExitTheGame()
+{
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!PlayerController) return;
+
+	PlayerController->ConsoleCommand("quit");
+}
+
 void UPuzzleGameInstance::Host()
 {
 	UEngine* Engine = GetEngine();

@@ -17,6 +17,9 @@ class UMainMenu : public UUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* ExitButton;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* Host;
 
 	UPROPERTY(meta = (BindWidget))
@@ -36,6 +39,9 @@ class UMainMenu : public UUserWidget
 
 	virtual bool Initialize() override;
 	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
+
+	UFUNCTION()
+	void OnExitClick();
 
 	UFUNCTION()
 	void OnHostClick();
